@@ -1,0 +1,13 @@
+{
+  "name": "boones-oculus-videos",
+  "version": "1.0.0",
+  "description": "A simple app for serving up videos relevant to the Oculus Rift.",
+  "main": "server.js",
+  "repository": "",
+  "author": "Boone Calhoun <boone188@gmail.com>",
+  "dependencies": {
+    "express": "~3.2.4",
+    "jade": "*",
+    "lru-cache": "*"
+  }
+}
