@@ -3,44 +3,51 @@
 //
 
 var express = require('express');
-var videoDataClient = require('./video-data-client');
+var videoViews = require('./video-views');
+var jade = require('jade');
 
 var app = express();
 
-// I love logs
-app.use(express.logger('dev'));
+// This will cache the rendered video views
+var renderedVideoViews = videoViews('./views/video');
 
-// Use Jade to render views
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.configure('development', function(){
+    console.log('Running in devo');
+});
+
+app.configure('production', function(){
+    console.log('Running in prod');
+});
 
 // Serve up static content
 app.use(express.static(__dirname + '/public'));
 
-// Render the index page. This is just a body and scripts.
-// The video player will call back to get videos.
+// Pre-render the index page. This is just a body and scripts.
+var indexHtml = jade.renderFile('./views/index.jade');
+
+// Return the body html. The video player will call back to get videos.
 app.get('/', function (req, res) {
-    res.render('index', {});
+    res.send(200, indexHtml);
 })
 
 // Return the video player, with initial video list.
 app.get('/player', function (req, res) {
-    videoDataClient.getVideoInfoJson('hot', 'week', function(data) {
-        res.render('video-player', { videoInfo : data, sortType : 'hotthisweek' });
+    renderedVideoViews('video-player', 'hot', 'week', function(html) {
+        res.send(200, html);
     });
 })
 
 // Return this week's hot videos
 app.get('/videos/hotthisweek', function (req, res) {
-    videoDataClient.getVideoInfoJson('hot', 'week', function(data) {
-        res.render('video-list', { videoInfo : data, sortType : 'hotthisweek' });
+    renderedVideoViews('video-list', 'hot', 'week', function(html) {
+        res.send(200, html);
     });
 })
 
 // Return today's hot videos
 app.get('/videos/hottoday', function (req, res) {
-    videoDataClient.getVideoInfoJson('hot', 'day', function(data) {
-        res.render('video-list', { videoInfo : data, sortType : 'hottoday' });
+    renderedVideoViews('video-list', 'hot', 'day', function(html) {
+        res.send(200, html);
     });
 })
 

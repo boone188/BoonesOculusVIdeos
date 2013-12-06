@@ -1,0 +1,38 @@
+#oculus-video-player
+  topVideo = videoInfo[0]
+  #oculus-video-player-upper
+    #active-video(data-player-type=topVideo.identifier.playerType, data-video-id=topVideo.identifier.id)
+      #active-video-frame
+      #active-video-info
+        if typeof topVideo.title != undefined
+          span#active-video-title= topVideo.title
+        else
+          span#active-video-title= ""
+        ul#active-video-stat-list.video-stat-list
+          if topVideo.identifier.playerType == 'YOUTUBE'
+            li.video-stat-list-item.link(data-link-href='http://www.youtube.com/watch?v=#{topVideo.identifier.id}')
+              span.video-stat-icon.youtube-stat-icon
+              span.video-stat-text #{topVideo.views}
+          redditInfo = topVideo.redditVideoInfo
+          if typeof redditInfo != 'undefined' && redditInfo.score > 0
+            li.video-stat-list-item.link(data-link-href=redditInfo.url)
+              span.video-stat-icon.reddit-stat-icon
+              span.video-stat-text #{redditInfo.score}
+              if typeof redditInfo.topCommentAuthor != 'undefined' && redditInfo.topCommentText != 'undefined'
+                span.video-stat-tooltip
+                  | <strong>#{redditInfo.topCommentAuthor}</strong> said <br/> <em>#{redditInfo.topCommentText}</em>
+          twitterInfo = topVideo.twitterVideoInfo
+          if typeof twitterInfo != 'undefined' && twitterInfo.numberOfTweets > 0
+            li.video-stat-list-item.link(data-link-href='https://twitter.com/search?q=#{topVideo.identifier.id}')
+              span.video-stat-icon.twitter-stat-icon
+              span.video-stat-text #{twitterInfo.numberOfTweets}
+              if typeof twitterInfo.topTweetUserName != 'undefined' && typeof twitterInfo.topTweetText != 'undefined'
+                span.video-stat-tooltip
+                  |  <strong>#{twitterInfo.topTweetUserName}</strong> tweeted <br/> <em>#{twitterInfo.topTweetText}</em>
+  #oculus-video-player-lower
+    .video-gallery-header
+      h2.video-gallery-title Hot Videos
+      ul.sort-list
+        li.sort-list-item(class= sortType==='hot_week'?'selected':'', data-sort-type='hotthisweek') This Week
+        li.sort-list-item(class= sortType==='hot_day'?'selected':'', data-sort-type='hottoday') Today
+  include video-list
