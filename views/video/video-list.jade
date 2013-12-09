@@ -10,11 +10,15 @@ block video-list
               h3.video-gallery-title.video-trigger= video.title
               .video-stat-container
                 ul.video-stat-list
+                  youtubeInfo = video.youtubeVideoInfo
                   if identifier.playerType == 'YOUTUBE'
                     li.video-stat-list-item
                       span.link(data-link-href='http://www.youtube.com/watch?v=#{identifier.id}')
                         span.video-stat-icon.youtube-stat-icon
                         span.video-stat-text #{video.views}
+                        if typeof youtubeInfo.topCommentAuthor != 'undefined' && youtubeInfo.topCommentText != 'undefined'
+                          span.video-stat-tooltip
+                            | <strong>#{youtubeInfo.topCommentAuthor}</strong> said <br/><br/> <em>#{youtubeInfo.topCommentText}</em>
                   redditInfo = video.redditVideoInfo
                   if typeof redditInfo != 'undefined' && redditInfo.score > 0
                     li.video-stat-list-item
@@ -23,7 +27,7 @@ block video-list
                         span.video-stat-text #{redditInfo.score}
                         if typeof redditInfo.topCommentAuthor != 'undefined' && redditInfo.topCommentText != 'undefined'
                           span.video-stat-tooltip
-                            | <strong>#{redditInfo.topCommentAuthor}</strong> said <br/> <em>#{redditInfo.topCommentText}</em>
+                            | <strong>#{redditInfo.topCommentAuthor}</strong> said <br/><br/> <em>#{redditInfo.topCommentText}</em>
                   twitterInfo = video.twitterVideoInfo
                   if typeof twitterInfo != 'undefined' && twitterInfo.numberOfTweets > 0
                     li.video-stat-list-item
@@ -32,4 +36,4 @@ block video-list
                         span.video-stat-text #{twitterInfo.numberOfTweets}
                         if typeof twitterInfo.topTweetUserName != 'undefined' && typeof twitterInfo.topTweetText != 'undefined'
                           span.video-stat-tooltip
-                            |  <strong>#{twitterInfo.topTweetUserName}</strong> tweeted <br/> <em>#{twitterInfo.topTweetText}</em>
+                            |  <strong>#{twitterInfo.topTweetUserName}</strong> tweeted <br/><br/> <em>#{twitterInfo.topTweetText}</em>
