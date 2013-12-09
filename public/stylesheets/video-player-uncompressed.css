@@ -78,14 +78,28 @@ UL#active-video-stat-list
 {
 	width:auto;
 	display:inline-block;
-	height:auto;
+	height:28px;
 	float:right;
 	position:relative;
-	left:0;
-	top:0;
 	overflow:visible;
 	margin:0 30px 0 0;
-	padding:3px
+	padding:3px;
+	white-space: nowrap;
+}
+
+#active-video-stat-list:before,
+#active-video-stat-list:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+#active-video-stat-list:after
+{
+    clear: both;
 }
 
 LI.video-stat-list-item
@@ -169,12 +183,26 @@ IMG.video-gallery-thumbnail:hover
 	border-bottom:1px solid #CDCDCD
 }
 
-DIV#active-video-info
+#active-video-info
 {
 	width:960px;
 	display:block;
 	height:auto;
 	margin:10px 0
+}
+
+#active-video-info:before, 
+#active-video-info:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+#active-video-info:after
+{
+    clear: both;
 }
 
 #active-video-frame
